@@ -14,8 +14,8 @@ migratecreate:
 	migrate create -ext sql -dir db/migration -seq init_schema
 
 migrateup:
-	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose up
-
+	migrate -path db/migration -database "postgresql://root:ds7UNV2XrQVqUsuqqJho@simple-bank.cpx2bwp5kzzn.us-east-1.rds.amazonaws.com:5432/simple_bank" -verbose up
+	
 migrateup1:
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose up 1
 
@@ -40,6 +40,4 @@ mock:
 
 .PHONY: network postgres createdb dropdb migratecreate migrateup migratedown migrateup1 migratedown1 sqlc test server mock
 
-
-
-    
+# migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose up  
