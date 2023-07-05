@@ -16,3 +16,5 @@ dropdb simple_bank
 docker exec -it postgres12 createdb --username=root --owner=root simple_bank
 
 docker exec -it postgres12 psql -U root simple_bank
+
+migrate create -ext sql -dir db/migration -seq add_sessions
