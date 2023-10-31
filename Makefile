@@ -45,8 +45,20 @@ server:
 mock:
 	mockgen -package mockdb -destination db/mock/store.go github.com/techschool/simplebank/db/sqlc Store
 
+proto:
+	rm -f pb/*.go
+	rm -f doc/swagger/*.swagger.json
+	protoc  --proto_path=proto --go_out=pb  --go_opt=paths=source_relative \
+	--go-grpc_out=pb --go-grpc_opt=paths=source_relative  \
+	--grpc-gateway_out=pb --grpc-gateway_opt=paths=source_relative \
+	--openapiv2_out=doc/swagger --openapiv2_opt=allow_merge=true,merge_file_name=simple_bank \
+	proto/*.proto
+	statik -src=./doc/swagger -dest=./doc		
 
-.PHONY: network postgres createdb dropdb migratecreate migrateup migratedown migrateup1 migratedown1 db_docs db_schema sqlc test server mock
+evans:
+	evans --host localhost --port 9090 -r repl
+
+.PHONY: network postgres createdb dropdb migratecreate migrateup migratedown migrateup1 migratedown1 db_docs db_schema sqlc test server mock proto
 
 # migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose up  
 #migrate -path db/migration -database "postgresql://root:ds7UNV2XrQVqUsuqqJho@simple-bank.cpx2bwp5kzzn.us-east-1.rds.amazonaws.com:5432/simple_bank" -verbose up
