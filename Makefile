@@ -27,6 +27,9 @@ migratedown:
 migratedown1:
 	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
 
+new_migration:
+	migrate create -ext sql -dir db/migration -seq $(name)
+
 db_docs:
 	dbdocs build doc/db.dbml
 
@@ -37,7 +40,7 @@ sqlc:
 	sqlc generate
 
 test:
-	go test -v -cover ./...
+	go test -v -cover -short ./...
 
 server:
 	go run main.go
@@ -58,7 +61,10 @@ proto:
 evans:
 	evans --host localhost --port 9090 -r repl
 
-.PHONY: network postgres createdb dropdb migratecreate migrateup migratedown migrateup1 migratedown1 db_docs db_schema sqlc test server mock proto
+redis:
+	docker run --name redis -p 6379:6379 -d redis:7-alpine	
+
+.PHONY: network postgres createdb dropdb migratecreate migrateup migratedown migrateup1 migratedown1 new_migration db_docs db_schema sqlc test server mock proto redis
 
 # migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose up  
 #migrate -path db/migration -database "postgresql://root:ds7UNV2XrQVqUsuqqJho@simple-bank.cpx2bwp5kzzn.us-east-1.rds.amazonaws.com:5432/simple_bank" -verbose up
