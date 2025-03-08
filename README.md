@@ -8,7 +8,7 @@ This is a back end for a  bank api using Golang, AWS Kuberenetes and Postgres. B
 #### To create postgres database inside inside a container shell use below instructions
 - docker exec -it postgres12 /bin/sh
 - createdb --username=root --owner=root simple_bank
-- 
+  
 #### To delete the database use the below command
 - dropdb simple_bank
 
